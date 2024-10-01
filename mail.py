@@ -1,21 +1,26 @@
-'''
-this code is used for scrap data from json file
-'''
 import json
 
-ans=set()
+# Initialize an empty set to store unique email addresses
+unique_emails = set()
 
-f=open('csvjson.json',)
+# Open and load the JSON file with error handling
+try:
+    with open('csvjson.json', 'r') as file:
+        # Load the JSON data from the file
+        data = json.load(file)
 
-#this below line is used for load json file
-data=json.load(f)
+        # Extract email addresses from each record in the data
+        for record in data:
+            if 'email' in record:
+                unique_emails.add(record['email'])
 
-#below code for scrap data from json file
-for j in range(len(data)):
-	for i in data:
-		ans.add(data[j]['email'])
-		
-print(ans)
-print(len(ans))
-f.close()
+except FileNotFoundError:
+    print("Error: The file 'csvjson.json' was not found.")
+except json.JSONDecodeError:
+    print("Error: Failed to decode the JSON file.")
+except Exception as e:
+    print(f"An error occurred: {e}")
 
+# Print the unique email addresses and their count
+print("Unique Emails:", unique_emails)
+print("Total Unique Emails:", len(unique_emails))
